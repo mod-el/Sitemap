@@ -3,6 +3,7 @@
 	"description": "XML sitemap generation",
 	"version": "0.1.0",
 	"dependencies": {
-		"Core": ">=2.8.5"
+		"Core": ">=2.8.5",
+		"Router": ">=1.2.2"
 	}
 }

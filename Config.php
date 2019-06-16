@@ -17,19 +17,6 @@ class Config extends Module_Config
 	}
 
 	/**
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public function makeCache(): bool
-	{
-		$config = $this->retrieveConfig();
-
-
-
-		return true;
-	}
-
-	/**
 	 * Rules for API actions
 	 *
 	 * @return array

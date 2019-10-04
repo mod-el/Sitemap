@@ -17,6 +17,9 @@ class SitemapController extends Controller
 		foreach ($pages as $page) {
 			$url = $xml->addChild('url');
 			$url->addChild('loc', BASE_HOST . $page['loc']);
+			$url->addChild('priority', $page['priority']);
+			if($page['lastmod'])
+				$url->addChild('lastmod', $page['lastmod']);
 		}
 
 		echo $xml->asXML();

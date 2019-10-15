@@ -24,8 +24,6 @@ class Sitemap extends Module
 				$controller = $idx;
 			}
 
-			$element = $this->model->_Router->getElementFor($controller);
-
 			$lastmod = null;
 			if ($options['lastmod']) {
 				if (is_array($options['lastmod'])) {
@@ -46,33 +44,37 @@ class Sitemap extends Module
 				}
 			}
 
-			if ($element) {
-				$elements = $this->model->all($element);
-				foreach ($elements as $el) {
-					$url = $el->getUrl();
+			$rules = $this->model->_Router->getRulesFor($controller);
+			foreach ($rules as $rIdx => $r) {
+				if ($r['options']['element']) {
+					$elements = $this->model->all($r['options']['element']);
+					foreach ($elements as $el) {
+						$url = $el->getUrl([], ['idx' => $rIdx]);
+						if (isset($arr[$url]))
+							continue;
+
+						if ($lastmod === null and isset($options['lastmod']['field'])) {
+							$lastmod = $el[$options['lastmod']['field']];
+							if ($lastmod)
+								$lastmod = date_create($lastmod)->format('Y-m-d');
+						}
+						$arr[$url] = [
+							'loc' => $url,
+							'priority' => $options['priority'],
+							'lastmod' => $lastmod,
+						];
+					}
+				} else {
+					$url = $this->model->getUrl($controller, null, [], ['idx' => $rIdx]);
 					if (isset($arr[$url]))
 						continue;
 
-					if ($lastmod === null and isset($options['lastmod']['field'])) {
-						$lastmod = $el[$options['lastmod']['field']];
-						if ($lastmod)
-							$lastmod = date_create($lastmod)->format('Y-m-d');
-					}
 					$arr[$url] = [
 						'loc' => $url,
 						'priority' => $options['priority'],
 						'lastmod' => $lastmod,
 					];
 				}
-			} else {
-				$url = $this->model->getUrl($controller);
-				if (isset($arr[$url]))
-					continue;
-				$arr[$url] = [
-					'loc' => $url,
-					'priority' => $options['priority'],
-					'lastmod' => $lastmod,
-				];
 			}
 		}
 

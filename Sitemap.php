@@ -47,7 +47,7 @@ class Sitemap extends Module
 			$rules = $this->model->_Router->getRulesFor($controller);
 			foreach ($rules as $rIdx => $r) {
 				if ($r['options']['element']) {
-					$elements = $this->model->all($r['options']['element']);
+					$elements = $this->model->all($r['options']['element'], $options['where'] ?? []);
 					foreach ($elements as $el) {
 						$url = $el->getUrl([], ['idx' => $rIdx]);
 						if (isset($arr[$url]))

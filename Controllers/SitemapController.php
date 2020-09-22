@@ -14,11 +14,15 @@ class SitemapController extends Controller
 		$pages = $this->model->_Sitemap->getPages();
 
 		$xml = new \SimpleXMLElement('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+		$seen = [];
 		foreach ($pages as $page) {
+			if (in_array($page['loc'], $seen))
+				continue;
+			$seen[] = $page['loc'];
 			$url = $xml->addChild('url');
 			$url->addChild('loc', BASE_HOST . $page['loc']);
 			$url->addChild('priority', $page['priority']);
-			if($page['lastmod'])
+			if ($page['lastmod'])
 				$url->addChild('lastmod', $page['lastmod']);
 		}
 

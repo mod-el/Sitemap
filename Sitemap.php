@@ -5,13 +5,11 @@ use Model\Core\Module;
 class Sitemap extends Module
 {
 	/**
-	 * @return array
+	 * @return \Generator
 	 */
-	public function getPages(): array
+	public function getPages(): \Generator
 	{
 		$config = $this->retrieveConfig();
-
-		$arr = [];
 
 		foreach ($config['controllers'] as $idx => $controller) {
 			$options = [
@@ -56,15 +54,13 @@ class Sitemap extends Module
 					$elements = $this->model->_Db->select_all($table, $options['where'] ?? []);
 					foreach ($elements as $el) {
 						$url = $this->model->getUrl($controller, $el['id'], [], ['idx' => $rIdx]);
-						if (isset($arr[$url]))
-							continue;
 
 						if ($lastmod === null and isset($options['lastmod']['field'])) {
 							$lastmod = $el[$options['lastmod']['field']];
 							if ($lastmod)
 								$lastmod = date_create($lastmod)->format('Y-m-d');
 						}
-						$arr[$url] = [
+						yield [
 							'loc' => $url,
 							'priority' => $options['priority'],
 							'lastmod' => $lastmod,
@@ -72,10 +68,8 @@ class Sitemap extends Module
 					}
 				} else {
 					$url = $this->model->getUrl($controller, null, [], ['idx' => $rIdx]);
-					if (isset($arr[$url]))
-						continue;
 
-					$arr[$url] = [
+					yield [
 						'loc' => $url,
 						'priority' => $options['priority'],
 						'lastmod' => $lastmod,
@@ -83,8 +77,6 @@ class Sitemap extends Module
 				}
 			}
 		}
-
-		return array_values($arr);
 	}
 
 	/**

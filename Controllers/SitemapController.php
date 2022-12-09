@@ -26,7 +26,7 @@ class SitemapController extends Controller
 				$url->addChild('lastmod', $page['lastmod']);
 		}
 
-		echo $xml->asXML();
+		echo preg_replace('/' . preg_quote('<?xml version="1.0"?>') . '/', '<?xml version="1.0" encoding="UTF-8"?>', $xml->asXML(), 1);
 		die();
 	}
 }

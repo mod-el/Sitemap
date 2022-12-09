@@ -6,7 +6,7 @@ class SitemapController extends Controller
 {
 	public function init()
 	{
-		header('Content-Type: text/xml');
+		header('Content-Type: application/xml');
 	}
 
 	public function index()

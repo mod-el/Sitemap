@@ -51,7 +51,7 @@ class Sitemap extends Module
 					$table = $r['options']['table'];
 
 				if ($table) {
-					$elements = $this->model->_Db->select_all($table, $options['where'] ?? []);
+					$elements = \Model\Db\Db::getConnection()->selectAll($table, $options['where'] ?? []);
 					foreach ($elements as $el) {
 						$url = $this->model->getUrl($controller, $el['id'], [], ['idx' => $rIdx]);
 

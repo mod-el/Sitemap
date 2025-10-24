@@ -42,13 +42,13 @@ class Sitemap extends Module
 				}
 			}
 
-			$rules = $this->model->_Router->getRulesFor($controller);
-			foreach ($rules as $rIdx => $r) {
+			$routes = $this->model->getRouter()->getRoutesForController($controller);
+			foreach ($routes as $rIdx => $route) {
 				$table = null;
-				if ($r['options']['element'])
-					$table = $this->model->_ORM->getTableFor($r['options']['element']);
-				elseif ($r['options']['table'])
-					$table = $r['options']['table'];
+				if ($route->options['model'])
+					$table = $this->model->_ORM->getTableFor($route->options['model']);
+				elseif ($route->options['table'])
+					$table = $route->options['table'];
 
 				if ($table) {
 					$elements = \Model\Db\Db::getConnection()->selectAll($table, $options['where'] ?? []);
@@ -77,20 +77,5 @@ class Sitemap extends Module
 				}
 			}
 		}
-	}
-
-	/**
-	 * @param array $request
-	 * @param string $rule
-	 * @return array|null
-	 */
-	public function getController(array $request, string $rule): ?array
-	{
-		if ($rule !== 'sitemap')
-			return null;
-
-		return [
-			'controller' => 'Sitemap',
-		];
 	}
 }

@@ -16,24 +16,6 @@ class Config extends Module_Config
 		});
 	}
 
-	/**
-	 * Rules for API actions
-	 *
-	 * @return array
-	 * @throws \Exception
-	 */
-	public function getRules(): array
-	{
-		return [
-			'rules' => [
-				'sitemap' => 'sitemap.xml',
-			],
-			'controllers' => [
-				'Sitemap',
-			],
-		];
-	}
-
 	public function getConfigData(): ?array
 	{
 		return [];

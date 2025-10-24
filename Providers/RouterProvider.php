@@ -8,7 +8,7 @@ class RouterProvider extends AbstractRouterProvider
 	{
 		return [
 			[
-				'pattern' => '/sitemap.xml',
+				'pattern' => 'sitemap.xml',
 				'controller' => 'Sitemap',
 			],
 		];
